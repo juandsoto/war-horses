@@ -5,7 +5,7 @@ interface Props {
   to: string;
 }
 
-const DifficultyButton = ({ text, to }: Props) => {
+const DifficultyButton = ({ text, to }: Props): JSX.Element => {
   return (
     <Link
       to={to}

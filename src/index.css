@@ -24,18 +24,50 @@
 }
 
 @layer components {
+  .animate-scale {
+    animation: 0.4s scale infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+  }
+
+  .cell {
+    @apply w-16 h-16 bg-dark flex items-center justify-center border border-light rounded-md;
+    transition: scale 0.2s ease-in-out;
+  }
+
+  .game {
+    @apply relative h-screen w-screen p-4;
+  }
+
+  .position__2-3 {
+    @apply bg-red-500;
+  }
+
+  .layout {
+    background-image: url(/public/bg.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+  }
+
   .logo {
     @apply max-w-[6rem] max-h-[6rem];
+  }
+
+  .player {
+    @apply cursor-pointer;
+  }
+
+  .selected {
+    scale: 0.9;
   }
 
   .text-important {
     @apply text-primary text-2xl;
   }
 
-  .animate-scale {
-    animation: 0.4s scale infinite;
-    animation-direction: alternate;
-    animation-timing-function: ease-in-out;
+  .valid__move {
+    @apply bg-gray !important;
   }
 }
 

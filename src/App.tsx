@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { LoadingScreen } from "components";
 import { Difficulty, Game } from "pages";
 
-function App() {
+const App = (): JSX.Element => {
   return (
     <Router>
       <Routes>
@@ -18,6 +18,6 @@ function App() {
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;

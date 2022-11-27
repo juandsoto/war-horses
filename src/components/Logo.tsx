@@ -2,7 +2,7 @@ interface Props {
   animate?: boolean;
 }
 
-const Logo = ({ animate = false }: Props) => {
+const Logo = ({ animate = false }: Props): JSX.Element => {
   return (
     <div className={`flex items-center gap-2 ${animate ? "animate-scale" : ""}`}>
       <img className="logo" src="/logo.png" alt="logo" />
