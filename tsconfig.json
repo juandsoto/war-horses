@@ -21,6 +21,10 @@
       "components/*": ["components/*"],
       "pages": ["pages"],
       "pages/*": ["pages/*"],
+      "store": ["store"],
+      "store/*": ["store/*"],
+      "types": ["types"],
+      "types/*": ["types/*"],
       "utils": ["utils"],
       "utils/*": ["utils/*"]
     }

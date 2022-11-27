@@ -12,7 +12,7 @@ const LoadingScreen = ({ children }: Props): JSX.Element => {
   useEffect(() => {
     const id = setTimeout(() => {
       setLoading(false);
-    }, 2500);
+    }, 2000);
 
     return () => clearTimeout(id);
   }, []);

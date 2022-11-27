@@ -24,18 +24,64 @@
 }
 
 @layer components {
+  .animate-scale {
+    animation: 0.4s scale infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+  }
+
+  .cell {
+    @apply w-16 h-16 bg-dark flex items-center justify-center border border-light rounded-md;
+    transition: all 1s ease-in-out;
+  }
+
+  .game {
+    @apply relative h-screen w-screen p-4 flex items-center justify-center;
+  }
+
+  .layout {
+    background-image: url(/bg.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
   .logo {
-    @apply max-w-[6rem] max-h-[6rem];
+    @apply max-w-[4rem] max-h-[4rem] md:max-w-[6rem] md:max-h-[6rem];
+  }
+
+  .machine-blob {
+    @apply w-32 h-32 text-2xl flex items-center justify-center;
+    filter: drop-shadow(0px 0px 4px black);
+    background-image: url(/machine-blob.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .player {
+    @apply cursor-pointer;
+  }
+
+  .player-blob {
+    @apply w-32 h-32 text-2xl flex items-center justify-center;
+    filter: drop-shadow(0px 0px 4px black);
+    background-image: url(/player-blob.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .selected {
+    scale: 0.9;
   }
 
   .text-important {
     @apply text-primary text-2xl;
   }
 
-  .animate-scale {
-    animation: 0.4s scale infinite;
-    animation-direction: alternate;
-    animation-timing-function: ease-in-out;
+  .valid__move {
+    @apply bg-gray cursor-pointer !important;
   }
 }
 
