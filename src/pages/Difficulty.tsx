@@ -7,7 +7,7 @@ const Difficulty = (): JSX.Element => {
       <div className="h-screen w-screen flex justify-center items-center">
         <div className="flex flex-col items-center text-2xl gap-4">
           {LEVELS.map(level => (
-            <DifficultyButton key={level} text={level} to={`/game?difficulty=${level}`} />
+            <DifficultyButton key={level} text={level} to={`/game`} />
           ))}
         </div>
       </div>

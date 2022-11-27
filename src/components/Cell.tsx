@@ -9,26 +9,32 @@ interface Props {
 }
 
 const SPRITES: Record<OBJECTS, JSX.Element | null> = {
-  0: null,
-  1: <img className="w-full h-full scale-75" src="/player.svg" alt="player" />,
-  2: <img className="w-full h-full scale-75" src="/machine.svg" alt="machine" />,
-  3: null,
+  [OBJECTS.BLANK]: null,
+  [OBJECTS.PLAYER]: <img className="w-full h-full scale-75" src="/player.svg" alt="player" />,
+  [OBJECTS.MACHINE]: <img className="w-full h-full scale-75" src="/machine.svg" alt="machine" />,
+  [OBJECTS.BONUS]: null,
+  [OBJECTS.PLAYER_CELL]: null,
+  [OBJECTS.MACHINE_CELL]: null,
 };
 
 const COLORS: Record<OBJECTS, HTMLDivElement["className"]> = {
-  0: "bg-dark",
-  1: "player bg-success border-success",
-  2: "machine bg-danger border-danger",
-  3: "bonus bg-dark",
+  [OBJECTS.BLANK]: "bg-dark",
+  [OBJECTS.PLAYER]: "player bg-success border-success",
+  [OBJECTS.MACHINE]: "machine bg-danger border-danger",
+  [OBJECTS.BONUS]: "bonus bg-dark",
+  [OBJECTS.PLAYER_CELL]: "bg-success",
+  [OBJECTS.MACHINE_CELL]: "bg-danger",
 };
 
 const Cell = ({ value, position }: Props): JSX.Element => {
-  const { selected, setSelected } = useStore();
+  const { selected, setSelected, setGame } = useStore();
 
-  const onSelect = () => {
-    if (value !== 1) return;
-    setSelected(!selected ? position : null);
+  const handleClick = () => {
+    if (value === OBJECTS.PLAYER) setSelected(!selected ? position : null);
+    if (selected && isValidMove) handleMove();
   };
+
+  const handleMove = () => setGame(selected!, position);
 
   const isSelected = selected?.x === position.x && selected?.y === position.y;
 
@@ -43,7 +49,7 @@ const Cell = ({ value, position }: Props): JSX.Element => {
       className={`cell position__${position.x}-${position.y} ${isValidMove ? "valid__move" : ""} ${
         isSelected ? "selected" : ""
       } ${COLORS[value]}`}
-      onClick={onSelect}
+      onClick={handleClick}
     >
       {SPRITES[value]}
     </div>

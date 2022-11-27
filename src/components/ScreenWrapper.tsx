@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FADE_VARIANTS } from "utils/motion";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 const ScreenWrapper = ({ children }: Props): JSX.Element => {
   return (
     <AnimatePresence mode="wait">
-      <div className="layout h-screen w-screen">
+      <div className="layout h-screen w-screen overflow-hidden">
         <motion.div
           className="relative h-screen w-screen"
           variants={FADE_VARIANTS}

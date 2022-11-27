@@ -1,12 +1,9 @@
 import { Grid, Logo, ScreenWrapper } from "components";
-import { useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import useStore from "store";
-import { TDifficulty } from "types";
 
 const Game = (): JSX.Element => {
-  const setDifficulty = useStore(state => state.setDifficulty);
-  const [queries, setQueries] = useSearchParams();
-  setDifficulty(queries.get("difficulty") as TDifficulty);
+  const { machineCellsQty, playerCellsQty } = useStore();
 
   return (
     <ScreenWrapper>
@@ -14,8 +11,22 @@ const Game = (): JSX.Element => {
         <div className="absolute top-4 left-4">
           <Logo />
         </div>
-        <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-          <Grid />
+        <Grid />
+        <div className="absolute bottom-0 right-0 flex gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 0.4, duration: 0.4, type: "spring", stiffness: 150 } }}
+            className="machine-blob"
+          >
+            {machineCellsQty}
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 0.6, duration: 0.4, type: "spring", stiffness: 150 } }}
+            className="player-blob"
+          >
+            {playerCellsQty}
+          </motion.div>
         </div>
       </div>
     </ScreenWrapper>
