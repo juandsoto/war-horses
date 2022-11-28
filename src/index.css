@@ -19,7 +19,7 @@
   }
 
   h1 {
-    @apply text-xl;
+    @apply text-sm sm:text-xl;
   }
 }
 
@@ -31,12 +31,12 @@
   }
 
   .cell {
-    @apply w-16 h-16 bg-dark flex items-center justify-center border border-light rounded-md;
-    transition: all 1s ease-in-out;
+    @apply w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-dark flex items-center justify-center border border-light rounded-md;
+    transition: scale 1s ease-in-out, background-color 1s ease-in-out 0.2;
   }
 
   .game {
-    @apply relative h-screen w-screen p-4 flex items-center justify-center;
+    @apply relative h-screen w-screen p-1 sm:p-4 flex items-center justify-center;
   }
 
   .layout {
@@ -47,16 +47,20 @@
   }
 
   .logo {
-    @apply max-w-[4rem] max-h-[4rem] md:max-w-[6rem] md:max-h-[6rem];
+    @apply max-w-[5rem] max-h-[5rem] sm:max-w-[6rem] sm:max-h-[6rem];
   }
 
-  .machine-blob {
-    @apply w-32 h-32 text-2xl flex items-center justify-center;
+  .machine-blob,
+  .player-blob {
+    @apply w-24 h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 text-2xl flex items-center justify-center;
     filter: drop-shadow(0px 0px 4px black);
-    background-image: url(/machine-blob.svg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+  }
+
+  .machine-blob {
+    background-image: url(/machine-blob.svg);
   }
 
   .player {
@@ -64,12 +68,7 @@
   }
 
   .player-blob {
-    @apply w-32 h-32 text-2xl flex items-center justify-center;
-    filter: drop-shadow(0px 0px 4px black);
     background-image: url(/player-blob.svg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
   }
 
   .selected {
@@ -82,6 +81,16 @@
 
   .valid__move {
     @apply bg-gray cursor-pointer !important;
+  }
+
+  @media screen and (max-width: 430px) {
+    .cell {
+      @apply w-8 h-8;
+    }
+    .machine-blob,
+    .player-blob {
+      @apply w-20 h-20;
+    }
   }
 }
 
