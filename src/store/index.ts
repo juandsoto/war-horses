@@ -19,18 +19,19 @@ const useStore = create<Store>(set => ({
   game: createGrid(),
   setGame: (current, next) =>
     set(state => {
-      const newGame = state.game.map(row => row.map(value => value));
+      const newGame = [...state.game];
       const currentObject = state.game[current.x][current.y];
       const nextObject = state.game[next.x][next.y];
 
       if (currentObject === OBJECTS.PLAYER) {
         if (nextObject === OBJECTS.BONUS) {
-          newGame[current.x][current.y] = OBJECTS.PLAYER_CELL;
+          debugger;
           const cellsToPaint = getAdjacentCells(next).filter(({ x, y }) => newGame[x][y] === OBJECTS.BLANK);
 
           cellsToPaint.forEach(({ x, y }) => {
             newGame[x][y] = OBJECTS.PLAYER_CELL;
           });
+          newGame[current.x][current.y] = OBJECTS.PLAYER_CELL;
           newGame[next.x][next.y] = OBJECTS.PLAYER;
           return {
             ...state,
@@ -50,12 +51,12 @@ const useStore = create<Store>(set => ({
       }
       if (currentObject === OBJECTS.MACHINE) {
         if (nextObject === OBJECTS.BONUS) {
-          newGame[current.x][current.y] = OBJECTS.MACHINE_CELL;
           const cellsToPaint = getAdjacentCells(next).filter(({ x, y }) => newGame[x][y] === OBJECTS.BLANK);
 
           cellsToPaint.forEach(({ x, y }) => {
             newGame[x][y] = OBJECTS.MACHINE_CELL;
           });
+          newGame[current.x][current.y] = OBJECTS.MACHINE_CELL;
           newGame[next.x][next.y] = OBJECTS.MACHINE;
           return {
             ...state,

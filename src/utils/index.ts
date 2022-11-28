@@ -43,7 +43,7 @@ export function getAdjacentCells({ x, y }: TPosition): TPosition[] {
   const top: TPosition = { x: x - 1, y };
   const bottom: TPosition = { x: x + 1, y };
 
-  return [left, top, right, bottom];
+  return [left, top, right, bottom].filter(pos => pos.x >= 0 && pos.y >= 0 && pos.x < 8 && pos.y < 8);
 }
 
 export function canMove(player: TPosition, move: TPosition): boolean {
@@ -84,5 +84,5 @@ function getMoves({ x, y }: TPosition) {
       x: x - 2,
       y: y + 1,
     },
-  ].filter(pos => pos.x >= 0 && pos.y >= 0 && pos.x <= 8 && pos.y <= 8);
+  ].filter(pos => pos.x >= 0 && pos.y >= 0 && pos.x < 8 && pos.y < 8);
 }
