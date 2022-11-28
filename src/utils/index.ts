@@ -1,8 +1,11 @@
-import { TDifficulty, TPosition } from "types";
+import { OBJECTS, TDifficulty, TPosition } from "types";
 
 export const LEVELS: TDifficulty[] = ["beginner", "amateur", "expert"];
 
-const alreadyUsed: TPosition[] = [];
+const players: TPosition[] = [];
+let bonuses: TPosition[] = [];
+let invalidBonusPositions: TPosition[] = [];
+
 export function createGrid(): number[][] {
   let arr: number[][] = [];
   for (let x = 0; x < 8; x++) {
@@ -12,14 +15,35 @@ export function createGrid(): number[][] {
     }
   }
   while (true) {
-    if (alreadyUsed.length === 2) break;
+    if (players.length === 2) break;
     const x = Math.floor(Math.random() * 8);
     const y = Math.floor(Math.random() * 8);
-    if (!!alreadyUsed.find(pos => pos.x === x && pos.y === y)) continue;
-    alreadyUsed.push({ x, y });
-    arr[x][y] = alreadyUsed.length;
+    if (!!players.find(pos => pos.x === x && pos.y === y)) continue;
+    players.push({ x, y });
+    arr[x][y] = players.length;
+  }
+
+  while (true) {
+    if (bonuses.length === 3) break;
+    const x = Math.floor(Math.random() * 8);
+    const y = Math.floor(Math.random() * 8);
+    getAdjacentCells({ x, y }).forEach(position => invalidBonusPositions.push(position));
+    if (!!players.find(pos => pos.x === x && pos.y === y)) continue;
+    if (!!invalidBonusPositions.find(pos => pos.x === x && pos.y === y)) continue;
+    bonuses.push({ x, y });
+    invalidBonusPositions.push({ x, y });
+    arr[x][y] = OBJECTS.BONUS;
   }
   return arr;
+}
+
+export function getAdjacentCells({ x, y }: TPosition): TPosition[] {
+  const left: TPosition = { x, y: y - 1 };
+  const right: TPosition = { x, y: y + 1 };
+  const top: TPosition = { x: x - 1, y };
+  const bottom: TPosition = { x: x + 1, y };
+
+  return [left, top, right, bottom].filter(pos => pos.x >= 0 && pos.y >= 0 && pos.x < 8 && pos.y < 8);
 }
 
 export function canMove(player: TPosition, move: TPosition): boolean {
@@ -60,5 +84,5 @@ function getMoves({ x, y }: TPosition) {
       x: x - 2,
       y: y + 1,
     },
-  ].filter(pos => pos.x >= 0 && pos.y >= 0 && pos.x <= 8 && pos.y <= 8);
+  ].filter(pos => pos.x >= 0 && pos.y >= 0 && pos.x < 8 && pos.y < 8);
 }
