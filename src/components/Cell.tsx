@@ -12,7 +12,7 @@ const SPRITES: Record<OBJECTS, JSX.Element | null> = {
   [OBJECTS.BLANK]: null,
   [OBJECTS.PLAYER]: <img className="w-full h-full scale-75" src="/player.svg" alt="player" />,
   [OBJECTS.MACHINE]: <img className="w-full h-full scale-75" src="/machine.svg" alt="machine" />,
-  [OBJECTS.BONUS]: null,
+  [OBJECTS.BONUS]: <img className="w-full h-full scale-75" src="/bonus.svg" alt="bonus" />,
   [OBJECTS.PLAYER_CELL]: null,
   [OBJECTS.MACHINE_CELL]: null,
 };

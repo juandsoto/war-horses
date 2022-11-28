@@ -1,5 +1,5 @@
 import { OBJECTS, TDifficulty, TPosition } from "types";
-import { createGrid } from "utils";
+import { createGrid, getAdjacentCells } from "utils";
 import create from "zustand";
 
 interface Store {
@@ -21,7 +21,24 @@ const useStore = create<Store>(set => ({
     set(state => {
       const newGame = state.game.map(row => row.map(value => value));
       const currentObject = state.game[current.x][current.y];
+      const nextObject = state.game[next.x][next.y];
+
       if (currentObject === OBJECTS.PLAYER) {
+        if (nextObject === OBJECTS.BONUS) {
+          newGame[current.x][current.y] = OBJECTS.PLAYER_CELL;
+          const cellsToPaint = getAdjacentCells(next).filter(({ x, y }) => newGame[x][y] === OBJECTS.BLANK);
+
+          cellsToPaint.forEach(({ x, y }) => {
+            newGame[x][y] = OBJECTS.PLAYER_CELL;
+          });
+          newGame[next.x][next.y] = OBJECTS.PLAYER;
+          return {
+            ...state,
+            game: newGame,
+            selected: null,
+            playerCellsQty: state.playerCellsQty + cellsToPaint.length + 1,
+          };
+        }
         newGame[current.x][current.y] = OBJECTS.PLAYER_CELL;
         newGame[next.x][next.y] = OBJECTS.PLAYER;
         return {
@@ -32,6 +49,21 @@ const useStore = create<Store>(set => ({
         };
       }
       if (currentObject === OBJECTS.MACHINE) {
+        if (nextObject === OBJECTS.BONUS) {
+          newGame[current.x][current.y] = OBJECTS.MACHINE_CELL;
+          const cellsToPaint = getAdjacentCells(next).filter(({ x, y }) => newGame[x][y] === OBJECTS.BLANK);
+
+          cellsToPaint.forEach(({ x, y }) => {
+            newGame[x][y] = OBJECTS.MACHINE_CELL;
+          });
+          newGame[next.x][next.y] = OBJECTS.MACHINE;
+          return {
+            ...state,
+            game: newGame,
+            selected: null,
+            machineCellsQty: state.machineCellsQty + cellsToPaint.length + 1,
+          };
+        }
         newGame[current.x][current.y] = OBJECTS.MACHINE_CELL;
         newGame[next.x][next.y] = OBJECTS.MACHINE;
         return {
