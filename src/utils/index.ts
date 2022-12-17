@@ -27,7 +27,7 @@ export function createGrid(): number[][] {
     if (bonuses.length === 3) break;
     const x = Math.floor(Math.random() * 8);
     const y = Math.floor(Math.random() * 8);
-    getAdjacentCells({ x, y }).forEach(position => invalidBonusPositions.push(position));
+    getAroundCells({ x, y }).forEach(position => invalidBonusPositions.push(position));
     if (!!players.find(pos => pos.x === x && pos.y === y)) continue;
     if (!!invalidBonusPositions.find(pos => pos.x === x && pos.y === y)) continue;
     bonuses.push({ x, y });
@@ -35,6 +35,15 @@ export function createGrid(): number[][] {
     arr[x][y] = OBJECTS.BONUS;
   }
   return arr;
+}
+
+function getAroundCells({ x, y }: TPosition): TPosition[] {
+  const topLeft: TPosition = { x: x - 1, y: y - 1 };
+  const topRight: TPosition = { x: x - 1, y: y + 1 };
+  const bottomLeft: TPosition = { x: x + 1, y: y - 1 };
+  const bottomRight: TPosition = { x: x + 1, y: y + 1 };
+
+  return getAdjacentCells({ x, y }).concat([topLeft, topRight, bottomLeft, bottomRight]);
 }
 
 export function getAdjacentCells({ x, y }: TPosition): TPosition[] {
