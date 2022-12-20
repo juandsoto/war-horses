@@ -29,11 +29,14 @@ const COLORS: Record<OBJECTS, HTMLDivElement["className"]> = {
 const Cell = ({ value, position }: Props): JSX.Element => {
   const { selected, setSelected, setGame, isMachineTurn, game, setPlayerHasMoves } = useStore();
 
+  const isFinalMove = useMemo(() => {
+    const moves = getMoves(position);
+    return !moves.some(({ x, y }) => game[x][y] === OBJECTS.BLANK || game[x][y] === OBJECTS.BONUS);
+  }, [game]);
+
   const handleClick = () => {
     if (isMachineTurn) return;
     if (value === OBJECTS.PLAYER) setSelected(!selected ? position : null);
-    const moves = getMoves(position);
-    const isFinalMove = !moves.some(({ x, y }) => game[x][y] === OBJECTS.BLANK || game[x][y] === OBJECTS.BONUS);
     if (isFinalMove) setPlayerHasMoves(false);
     if (selected && isValidMove) handleMove();
   };
