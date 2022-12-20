@@ -27,9 +27,10 @@ const COLORS: Record<OBJECTS, HTMLDivElement["className"]> = {
 };
 
 const Cell = ({ value, position }: Props): JSX.Element => {
-  const { selected, setSelected, setGame } = useStore();
+  const { selected, setSelected, setGame, isMachineTurn } = useStore();
 
   const handleClick = () => {
+    if (isMachineTurn) return;
     if (value === OBJECTS.PLAYER) setSelected(!selected ? position : null);
     if (selected && isValidMove) handleMove();
   };

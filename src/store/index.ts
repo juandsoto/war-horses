@@ -1,4 +1,4 @@
-import { nodeDepth, setNodeDepth } from "main";
+import { setNodeDepth } from "main";
 import { OBJECTS, TDifficulty, TPosition } from "types";
 import { DifficultyDepth } from "types/TDifficulty";
 import { createGrid, getAdjacentCells } from "utils";
@@ -12,12 +12,14 @@ interface Store {
   selected: TPosition | null;
   setSelected: (position: TPosition | null) => void;
   isMachineTurn: boolean;
+  machineHasMoves: boolean;
   playerCellsQty: number;
   machineCellsQty: number;
 }
 
 const useStore = create<Store>(set => ({
   isMachineTurn: false,
+  machineHasMoves: true,
   difficulty: "expert" as TDifficulty,
   setDifficulty: difficulty => {
     set(state => ({ ...state, difficulty }));
@@ -28,7 +30,16 @@ const useStore = create<Store>(set => ({
     set(state => {
       const newGame = [...state.game];
       const currentObject = state.game[current.x][current.y];
-      const nextObject = state.game[next.x][next.y];
+      let nextObject: number;
+      try {
+        nextObject = state.game[next.x][next.y];
+      } catch (error) {
+        return {
+          ...state,
+          isMachineTurn: false,
+          machineHasMoves: false,
+        };
+      }
 
       if (currentObject === OBJECTS.PLAYER) {
         if (nextObject === OBJECTS.BONUS) {
@@ -43,7 +54,7 @@ const useStore = create<Store>(set => ({
             ...state,
             game: newGame,
             selected: null,
-            isMachineTurn: true,
+            isMachineTurn: state.machineHasMoves,
             playerCellsQty: state.playerCellsQty + cellsToPaint.length + 1,
           };
         }
@@ -53,7 +64,7 @@ const useStore = create<Store>(set => ({
           ...state,
           game: newGame,
           selected: null,
-          isMachineTurn: true,
+          isMachineTurn: state.machineHasMoves,
           playerCellsQty: state.playerCellsQty + 1,
         };
       }

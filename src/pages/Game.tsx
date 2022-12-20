@@ -7,7 +7,7 @@ import useStore from "store";
 import { matrixDeepClone } from "utils";
 
 const Game = (): JSX.Element => {
-  const { machineCellsQty, playerCellsQty, game, setGame, difficulty, isMachineTurn } = useStore();
+  const { machineCellsQty, playerCellsQty, game, setGame, difficulty, isMachineTurn, machineHasMoves } = useStore();
   const navigate = useNavigate();
   const onPlay = () => {
     const minimax = new Minimax();
@@ -16,15 +16,13 @@ const Game = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!isMachineTurn) return;
+    if (!isMachineTurn || !machineHasMoves) return;
     setTimeout(() => onPlay(), 500);
   }, [isMachineTurn]);
 
   useEffect(() => {
     if (difficulty.length !== 0) return;
-
     console.log({ difficulty });
-
     navigate("/", { replace: true });
   }, []);
 

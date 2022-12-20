@@ -30,7 +30,7 @@ class Minimax {
       this.expandedNodes.filter(node => node.getDepth() === depth).forEach(node => node.buildUtility());
     }
 
-    console.log({ nodesToExpand, expanded: this.expandedNodes });
+    console.log({ expanded: this.expandedNodes });
     return {
       currentMachine: machinePosition,
       nextMachine: this.expandedNodes[0].getBestChoice(),
