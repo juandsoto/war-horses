@@ -25,12 +25,9 @@ class Minimax {
       });
       this.expandedNodes.push(expanded);
     }
-
     for (let depth = nodeDepth - 1; depth >= 0; depth--) {
       this.expandedNodes.filter(node => node.getDepth() === depth).forEach(node => node.buildUtility());
     }
-
-    console.log({ expanded: this.expandedNodes });
     return {
       currentMachine: machinePosition,
       nextMachine: this.expandedNodes[0].getBestChoice(),

@@ -18,6 +18,7 @@ interface Store {
   setPlayerHasMoves: (hasMoves: boolean) => void;
   playerCellsQty: number;
   machineCellsQty: number;
+  reset: () => void;
 }
 
 const useStore = create<Store>(set => ({
@@ -26,7 +27,7 @@ const useStore = create<Store>(set => ({
   machineHasMoves: true,
   playerHasMoves: true,
   setPlayerHasMoves: hasMoves => set(state => ({ ...state, playerHasMoves: hasMoves })),
-  difficulty: "expert" as TDifficulty,
+  difficulty: "" as TDifficulty,
   setDifficulty: difficulty => {
     set(state => ({ ...state, difficulty }));
     setNodeDepth(DifficultyDepth[difficulty]);
@@ -107,6 +108,19 @@ const useStore = create<Store>(set => ({
   setSelected: selected => set(state => ({ ...state, selected })),
   playerCellsQty: 1,
   machineCellsQty: 1,
+
+  reset: () =>
+    set(state => ({
+      ...state,
+      isMachineTurn: false,
+      machineHasMoves: true,
+      playerHasMoves: true,
+      difficulty: "" as TDifficulty,
+      game: createGrid(),
+      selected: null,
+      playerCellsQty: 1,
+      machineCellsQty: 1,
+    })),
 }));
 
 export default useStore;

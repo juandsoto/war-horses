@@ -34,8 +34,6 @@ const Cell = ({ value, position }: Props): JSX.Element => {
     if (value === OBJECTS.PLAYER) setSelected(!selected ? position : null);
     const moves = getMoves(position);
     const isFinalMove = !moves.some(({ x, y }) => game[x][y] === OBJECTS.BLANK || game[x][y] === OBJECTS.BONUS);
-    console.log({ isFinalMove });
-
     if (isFinalMove) setPlayerHasMoves(false);
     if (selected && isValidMove) handleMove();
   };
