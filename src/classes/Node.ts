@@ -12,6 +12,7 @@ class Node {
   private _utility: number = -Infinity;
   private _game: number[][];
   private _children: Node[] = [];
+  public playerHasMoves: boolean = true;
 
   constructor(position: TPosition, father: Node | null = null, game: number[][] = [[]]) {
     this._position = position;
@@ -20,6 +21,7 @@ class Node {
       return;
     }
     this._father = father;
+    this.playerHasMoves = this._father.playerHasMoves;
     this._type = this._father._type === "MAX" ? "MIN" : "MAX";
     this._depth = this._father._depth + 1;
     this._utility = this._type === "MAX" ? -Infinity : Infinity;
@@ -40,12 +42,13 @@ class Node {
     if (this.canMove(position)) {
       this._game[position.x][position.y] = this.isMachineMove() ? OBJECTS.MACHINE : OBJECTS.PLAYER;
     }
-    if (this._type === "MIN") {
+    if (this.isMin()) {
       const playerPosition = findPlayer(this._game);
       const possibleMoves = getMoves(playerPosition);
       const isFinalMove = !possibleMoves.some(move => this.canMove(move));
-
-      if (!isFinalMove) {
+      if (isFinalMove) {
+        this.playerHasMoves = false;
+      } else {
         this.setPosition(playerPosition);
       }
     } else {
@@ -145,16 +148,22 @@ class Node {
   }
 
   getBestChoice(): TPosition {
-    let position = {} as TPosition;
+    let position = { x: -1, y: -1 };
+    const childNode = this._children.find(node => node._utility === this._utility);
+    if (!childNode?.playerHasMoves) {
+      try {
+        position = childNode!._position;
+      } catch (err) {
+        console.error("Machine has no movements left!");
+      }
+      return position;
+    }
+
     try {
-      position = this._children
-        .find(node => node._utility === this._utility)!
-        ._children.find(node => node._utility === this._utility)!._position;
+      position = childNode!._children.find(node => node._utility === this._utility)!._position;
     } catch (error) {
       try {
-        console.log({ position });
-
-        position = this._children.find(node => node._utility === this._utility)!._position;
+        position = childNode._position;
       } catch (err) {
         console.error("Machine has no movements left!");
       }

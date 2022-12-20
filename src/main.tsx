@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-export let nodeDepth: number = 6;
+export let nodeDepth: number = 2;
 export function setNodeDepth(depth: number) {
   nodeDepth = depth;
 }
