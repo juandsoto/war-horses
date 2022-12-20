@@ -1,4 +1,6 @@
+import { nodeDepth, setNodeDepth } from "main";
 import { OBJECTS, TDifficulty, TPosition } from "types";
+import { DifficultyDepth } from "types/TDifficulty";
 import { createGrid, getAdjacentCells } from "utils";
 import create from "zustand";
 
@@ -9,13 +11,18 @@ interface Store {
   setGame: (current: TPosition, next: TPosition) => void;
   selected: TPosition | null;
   setSelected: (position: TPosition | null) => void;
+  isMachineTurn: boolean;
   playerCellsQty: number;
   machineCellsQty: number;
 }
 
 const useStore = create<Store>(set => ({
-  difficulty: "beginner",
-  setDifficulty: difficulty => set(state => ({ ...state, difficulty })),
+  isMachineTurn: false,
+  difficulty: "expert" as TDifficulty,
+  setDifficulty: difficulty => {
+    set(state => ({ ...state, difficulty }));
+    setNodeDepth(DifficultyDepth[difficulty]);
+  },
   game: createGrid(),
   setGame: (current, next) =>
     set(state => {
@@ -25,7 +32,6 @@ const useStore = create<Store>(set => ({
 
       if (currentObject === OBJECTS.PLAYER) {
         if (nextObject === OBJECTS.BONUS) {
-          debugger;
           const cellsToPaint = getAdjacentCells(next).filter(({ x, y }) => newGame[x][y] === OBJECTS.BLANK);
 
           cellsToPaint.forEach(({ x, y }) => {
@@ -37,6 +43,7 @@ const useStore = create<Store>(set => ({
             ...state,
             game: newGame,
             selected: null,
+            isMachineTurn: true,
             playerCellsQty: state.playerCellsQty + cellsToPaint.length + 1,
           };
         }
@@ -46,6 +53,7 @@ const useStore = create<Store>(set => ({
           ...state,
           game: newGame,
           selected: null,
+          isMachineTurn: true,
           playerCellsQty: state.playerCellsQty + 1,
         };
       }
@@ -62,6 +70,7 @@ const useStore = create<Store>(set => ({
             ...state,
             game: newGame,
             selected: null,
+            isMachineTurn: false,
             machineCellsQty: state.machineCellsQty + cellsToPaint.length + 1,
           };
         }
@@ -71,6 +80,7 @@ const useStore = create<Store>(set => ({
           ...state,
           game: newGame,
           selected: null,
+          isMachineTurn: false,
           machineCellsQty: state.machineCellsQty + 1,
         };
       }
