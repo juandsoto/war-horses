@@ -59,7 +59,7 @@ export function canMove(player: TPosition, move: TPosition): boolean {
   return !!getMoves(player).find(pos => pos.x === move.x && pos.y === move.y);
 }
 
-function getMoves({ x, y }: TPosition) {
+export function getMoves({ x, y }: TPosition) {
   return [
     {
       x: x - 1,
@@ -94,4 +94,37 @@ function getMoves({ x, y }: TPosition) {
       y: y + 1,
     },
   ].filter(pos => pos.x >= 0 && pos.y >= 0 && pos.x < 8 && pos.y < 8);
+}
+
+export function findMachine(game: number[][]): TPosition {
+  for (let x = 0; x < 8; x++) {
+    for (let y = 0; y < 8; y++) {
+      if (game[x][y] === OBJECTS.MACHINE) return { x, y };
+    }
+  }
+  console.error("Player not found");
+  return {} as TPosition;
+  // throw new Error("Machine was not found");
+}
+
+export function findPlayer(game: number[][]): TPosition {
+  for (let x = 0; x < 8; x++) {
+    for (let y = 0; y < 8; y++) {
+      if (game[x][y] === OBJECTS.PLAYER) return { x, y };
+    }
+  }
+  console.error("Player not found");
+  return {} as TPosition;
+  // throw new Error("Player was not found");
+}
+
+export function matrixDeepClone(matrix: number[][]): number[][] {
+  let newMatrix: number[][] = [];
+  for (let x in matrix) {
+    newMatrix[x] = [];
+    for (let y in matrix[x]) {
+      newMatrix[x].push(matrix[x][y]);
+    }
+  }
+  return newMatrix;
 }
