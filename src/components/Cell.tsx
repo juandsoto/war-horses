@@ -22,12 +22,12 @@ const COLORS: Record<OBJECTS, HTMLDivElement["className"]> = {
   [OBJECTS.PLAYER]: "player bg-success border-success",
   [OBJECTS.MACHINE]: "machine bg-danger border-danger",
   [OBJECTS.BONUS]: "bonus bg-dark",
-  [OBJECTS.PLAYER_CELL]: "bg-success",
-  [OBJECTS.MACHINE_CELL]: "bg-danger",
+  [OBJECTS.PLAYER_CELL]: "bg-success border-success",
+  [OBJECTS.MACHINE_CELL]: "bg-danger border-danger",
 };
 
 const Cell = ({ value, position }: Props): JSX.Element => {
-  const { selected, setSelected, setGame, isMachineTurn, game, setPlayerHasMoves } = useStore();
+  const { selected, setSelected, setGame, isMachineTurn, game, setPlayerHasMoves, setIsMachineTurn } = useStore();
 
   const isFinalMove = useMemo(() => {
     const moves = getMoves(position);
@@ -36,8 +36,14 @@ const Cell = ({ value, position }: Props): JSX.Element => {
 
   const handleClick = () => {
     if (isMachineTurn) return;
+    if (value === OBJECTS.MACHINE) return;
     if (value === OBJECTS.PLAYER) setSelected(!selected ? position : null);
-    if (isFinalMove) setPlayerHasMoves(false);
+    console.log({ isFinalMove });
+
+    if (isFinalMove) {
+      setPlayerHasMoves(false);
+      setIsMachineTurn(true);
+    }
     if (selected && isValidMove) handleMove();
   };
 
