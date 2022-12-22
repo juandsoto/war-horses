@@ -65,25 +65,51 @@ class Node {
   }
 
   getHeuristic(): number {
-    let machineQty = 0;
-    let playerQty = 0;
+    let machine = 0;
+    let player = 0;
+    let machineCells = 0;
+    let playerCells = 0;
+    let machinePosition: TPosition = {} as TPosition;
+    let playerPosition: TPosition = {} as TPosition;
     for (let x in this._game) {
       for (let y in this._game[x]) {
-        this._game[x][y] === OBJECTS.MACHINE_CELL && machineQty++;
-        this._game[x][y] === OBJECTS.PLAYER_CELL && playerQty++;
+        if (this._game[x][y] === OBJECTS.MACHINE) {
+          machinePosition = { x: parseInt(x), y: parseInt(y) };
+          continue;
+        }
+        if (this._game[x][y] === OBJECTS.PLAYER) {
+          playerPosition = { x: parseInt(x), y: parseInt(y) };
+          continue;
+        }
+        this._game[x][y] === OBJECTS.MACHINE_CELL && machineCells++;
+        this._game[x][y] === OBJECTS.PLAYER_CELL && playerCells++;
       }
     }
-    return machineQty - playerQty;
+    machine += machineCells;
+    player += playerCells;
+
+    // machine += getMoves(machinePosition).filter(move => this.canMove(move)).length;
+    // player += getMoves(playerPosition).filter(move => this.canMove(move)).length;
+
+    // if (this.isBonus()) {
+    //   if (this.isMin()) {
+    //     player += 1;
+    //   } else {
+    //     machine += 1;
+    //   }
+    // }
+
+    return machine - player;
   }
 
   buildUtility(): void {
     const childrenUtilities = this._children.map(node => node._utility);
     let utility: number;
-    if (!childrenUtilities.length) {
-      utility = 0;
-      this.setUtility(utility);
-      return;
-    }
+    // if (!childrenUtilities.length) {
+    //   utility = 0;
+    //   this.setUtility(utility);
+    //   return;
+    // }
     if (this._type === "MAX") {
       utility = Math.max(...childrenUtilities);
     } else {

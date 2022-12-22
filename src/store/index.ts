@@ -1,8 +1,10 @@
 import { setNodeDepth } from "main";
+import { mountStoreDevtool } from "simple-zustand-devtools";
 import { OBJECTS, TDifficulty, TPosition } from "types";
 import { DifficultyDepth } from "types/TDifficulty";
-import { createGrid, getAdjacentCells } from "utils";
+import { createGrid, getAdjacentCells, getMoves } from "utils";
 import create from "zustand";
+import { findPlayer } from "../utils/index";
 
 interface Store {
   difficulty: TDifficulty;
@@ -50,7 +52,9 @@ const useStore = create<Store>(set => ({
 
       if (currentObject === OBJECTS.PLAYER) {
         if (nextObject === OBJECTS.BONUS) {
-          const cellsToPaint = getAdjacentCells(next).filter(({ x, y }) => newGame[x][y] === OBJECTS.BLANK);
+          const cellsToPaint: TPosition[] = getAdjacentCells(next).filter(
+            ({ x, y }) => newGame[x][y] === OBJECTS.BLANK
+          );
 
           cellsToPaint.forEach(({ x, y }) => {
             newGame[x][y] = OBJECTS.PLAYER_CELL;
@@ -94,6 +98,24 @@ const useStore = create<Store>(set => ({
         }
         newGame[current.x][current.y] = OBJECTS.MACHINE_CELL;
         newGame[next.x][next.y] = OBJECTS.MACHINE;
+
+        const machineBlocksPlayerOnlyMovement =
+          getMoves(findPlayer(newGame)).length === 1 &&
+          getMoves(findPlayer(newGame))[0].x === next.x &&
+          getMoves(findPlayer(newGame))[0].y === next.y;
+
+        if (machineBlocksPlayerOnlyMovement) {
+          console.warn("BLOCKS LAST MOVEMENT");
+          return {
+            ...state,
+            game: newGame,
+            selected: null,
+            isMachineTurn: true,
+            playerHasMoves: false,
+            machineCellsQty: state.machineCellsQty + 1,
+          };
+        }
+
         return {
           ...state,
           game: newGame,
@@ -122,5 +144,7 @@ const useStore = create<Store>(set => ({
       machineCellsQty: 1,
     })),
 }));
+
+mountStoreDevtool("Store", useStore);
 
 export default useStore;

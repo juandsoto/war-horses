@@ -51,6 +51,8 @@ const Game = (): JSX.Element => {
       navigate("/", { replace: true });
       return;
     }
+    console.log({ game });
+
     setTimeout(() => setIsMachineTurn(true), 500);
   }, []);
 
