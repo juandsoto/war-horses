@@ -38,7 +38,6 @@ const Cell = ({ value, position }: Props): JSX.Element => {
     if (isMachineTurn) return;
     if (value === OBJECTS.MACHINE) return;
     if (value === OBJECTS.PLAYER) setSelected(!selected ? position : null);
-    console.log({ isFinalMove });
 
     if (isFinalMove) {
       setPlayerHasMoves(false);

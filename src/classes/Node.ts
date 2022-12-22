@@ -88,16 +88,16 @@ class Node {
     machine += machineCells;
     player += playerCells;
 
-    machine += getMoves(machinePosition).filter(move => this.canMove(move)).length;
-    player += getMoves(playerPosition).filter(move => this.canMove(move)).length;
+    // machine += getMoves(machinePosition).filter(move => this.canMove(move)).length;
+    // player += getMoves(playerPosition).filter(move => this.canMove(move)).length;
 
-    if (this.isBonus()) {
-      if (this.isMin()) {
-        machine += 5;
-      } else {
-        player += 5;
-      }
-    }
+    // if (this.isBonus()) {
+    //   if (this.isMin()) {
+    //     player += 1;
+    //   } else {
+    //     machine += 1;
+    //   }
+    // }
 
     return machine - player;
   }
@@ -105,11 +105,11 @@ class Node {
   buildUtility(): void {
     const childrenUtilities = this._children.map(node => node._utility);
     let utility: number;
-    if (!childrenUtilities.length) {
-      utility = 0;
-      this.setUtility(utility);
-      return;
-    }
+    // if (!childrenUtilities.length) {
+    //   utility = 0;
+    //   this.setUtility(utility);
+    //   return;
+    // }
     if (this._type === "MAX") {
       utility = Math.max(...childrenUtilities);
     } else {
